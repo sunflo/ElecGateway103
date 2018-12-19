@@ -36,13 +36,21 @@ public class BG5485UnpStrategy extends AbsDeviceUnpackStrategy<BG5485Convert, BG
 
 	@Override
 	protected BG5485Packet handleTotalQuery(int size, Map<Integer, ResultWrapper> ycData,
-			Map<Integer, ResultWrapper> yxData, Map<Integer, ResultWrapper> ymData) throws PacketInCorrectException,
-			UnRegistSupervisorException {
+			Map<Integer, ResultWrapper> yxData, Map<Integer, ResultWrapper> ymData)
+			throws PacketInCorrectException, UnRegistSupervisorException {
 		BG5485Packet packet = new BG5485Packet(mDevice.vCpu);
 
-		packet.wet = (short) (Utils.bytes2Short(ycData.get(1).getOriginData()) & 0xFFFF);
+		if (ycData.get(1).getDataTyp() == 0x0C) {
+			packet.wet = (short) (Utils.bytes2Short(ycData.get(1).getOriginData()) & 0xFFFF);
+		} else {
+			packet.wet = (short) (Utils.byte2float(ycData.get(1).getOriginData()));
+		}
 
-		packet.temp = (short) (Utils.bytes2Short(ycData.get(2).getOriginData()) & 0xFFFF);
+		if (ycData.get(2).getDataTyp() == 0x0C) {
+			packet.temp = (short) (Utils.bytes2Short(ycData.get(2).getOriginData()) & 0xFFFF);
+		} else {
+			packet.temp = (short) (Utils.byte2float(ycData.get(2).getOriginData()));
+		}
 		return packet;
 	}
 

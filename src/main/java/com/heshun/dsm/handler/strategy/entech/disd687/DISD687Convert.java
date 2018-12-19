@@ -235,6 +235,10 @@ public class DISD687Convert extends AbsJsonConvert<DISD687Packet> {
 		return (float) ((double) mPacket._pfc / 1000);
 	}
 
+	private long getDL(long r) {
+		return (long) (((double) r) / 2.5) * 1000;
+	}
+
 	/**
 	 * 三相功率因数
 	 */
@@ -262,27 +266,27 @@ public class DISD687Convert extends AbsJsonConvert<DISD687Packet> {
 		// ADD
 		_json.put("freq", mPacket._freq);
 
-		_json.put("pa", mPacket._pa*1000);
-		_json.put("pb", mPacket._pb*1000);
-		_json.put("pc", mPacket._pc*1000);
-		_json.put("pt", mPacket._ptotal*1000);
+		_json.put("pa", mPacket._pa * 1000);
+		_json.put("pb", mPacket._pb * 1000);
+		_json.put("pc", mPacket._pc * 1000);
+		_json.put("pt", mPacket._ptotal * 1000);
 		// ADD
-		_json.put("qa", mPacket._qa*1000);
-		_json.put("qb", mPacket._qb*1000);
-		_json.put("qc", mPacket._qc*1000);
-		_json.put("qt", mPacket._qtotal*1000);
+		_json.put("qa", mPacket._qa * 1000);
+		_json.put("qb", mPacket._qb * 1000);
+		_json.put("qc", mPacket._qc * 1000);
+		_json.put("qt", mPacket._qtotal * 1000);
 		// ADD
-		_json.put("sa", mPacket._pa*1000);
-		_json.put("sb", mPacket._pb*1000);
-		_json.put("sc", mPacket._pc*1000);
-		_json.put("st", mPacket._ptotal*1000);
+		_json.put("sa", mPacket._pa * 1000);
+		_json.put("sb", mPacket._pb * 1000);
+		_json.put("sc", mPacket._pc * 1000);
+		_json.put("st", mPacket._ptotal * 1000);
 		// ADD
 		_json.put("pfa", mPacket._pfa);
 		_json.put("pfb", mPacket._pfb);
 		_json.put("pfc", mPacket._pfc);
 		_json.put("pft", mPacket._pftotal);
-		_json.put("epi", mPacket.epi*1000);
-		_json.put("eql", mPacket.eql*1000);
+		_json.put("epi", getDL(mPacket.epi));
+		_json.put("eql", getDL(mPacket.eql));
 		return _json;
 	}
 
