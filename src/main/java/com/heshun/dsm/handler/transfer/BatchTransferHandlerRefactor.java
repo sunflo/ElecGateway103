@@ -70,7 +70,7 @@ public class BatchTransferHandlerRefactor implements ItfTransferHandler {
 				jo.put("isAlarm", true);
 				ELog.getInstance().log(String.format("突变上送|\r\n %s \r\n %s", logotype, JSONObject.toJSONString(jo)),
 						logotype);
-				ELog.getInstance().log(HttpUtils.post(Constants.getEnviroUrl(), jo), logotype);
+				ELog.getInstance().log(HttpUtils.post(Constants.getEvFullUrl(), jo), logotype);
 			}
 		});
 	}
