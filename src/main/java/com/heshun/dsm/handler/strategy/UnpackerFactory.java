@@ -6,6 +6,9 @@ import org.apache.mina.core.session.IoSession;
 import com.heshun.dsm.entity.Device;
 import com.heshun.dsm.handler.strategy.acrel.PZ7280EUnpStrategy;
 import com.heshun.dsm.handler.strategy.bg5485.BG5485UnpStrategy;
+import com.heshun.dsm.handler.strategy.common.CommonUnPackStrategy;
+import com.heshun.dsm.handler.strategy.common.ann_pack.PD204Z_ANNO;
+import com.heshun.dsm.handler.strategy.common.ann_pack.PD204E_ANNO;
 import com.heshun.dsm.handler.strategy.def.DefaultUnpStrategy;
 import com.heshun.dsm.handler.strategy.dtsd342._7n.DTSD3427NUnPackStrategy;
 import com.heshun.dsm.handler.strategy.entech.disd687.DISD687UnpStrategy;
@@ -23,6 +26,9 @@ import com.heshun.dsm.handler.strategy.switchmodule.daishan.SwitchModuleUnpStrat
 import com.heshun.dsm.handler.strategy.switchmodule.hz.SwitchModuleUnpStrategy4HZ;
 import com.heshun.dsm.handler.strategy.switchmodule.jingci.SwitchModuleUnpStrategy4JCS;
 import com.heshun.dsm.handler.strategy.yht2tr.YHT2TRUnpStrategy;
+import com.heshun.dsm.handler.strategy.zddl._19219.pd194.PD194UnpStrategy;
+import com.heshun.dsm.handler.strategy.zddl._19219.pd810.PD180UnpStrategy;
+import com.heshun.dsm.handler.strategy.zddl._19219.sa.SAxxxUnpStrategy;
 
 /**
  * 构建一个对应类型的解包器
@@ -74,6 +80,26 @@ public class UnpackerFactory {
 			return new DISD687UnpStrategy(session, in, device);
 		case "PMC350":
 			return new PMC350UnpStrategy(session, in, device);
+		case "PD180":
+			return new PD180UnpStrategy(session, in, device);
+		case "PD194":
+			return new PD194UnpStrategy(session, in, device);
+		case "SA000":
+			return new SAxxxUnpStrategy(session, in, device);
+		case "PD204Z_ZD":
+			return new CommonUnPackStrategy<PD204Z_ANNO>(session, in, device) {
+				@Override
+				public PD204Z_ANNO getPack(int cpu) {
+					return new PD204Z_ANNO(cpu);
+				}
+			};
+		case "PD204E_ZD":
+			return new CommonUnPackStrategy<PD204E_ANNO>(session, in, device) {
+				@Override
+				public PD204E_ANNO getPack(int cpu) {
+					return new PD204E_ANNO(cpu);
+				}
+			};
 		default:
 			return new DefaultUnpStrategy(session, in, device);
 		}
