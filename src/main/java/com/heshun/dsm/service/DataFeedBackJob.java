@@ -45,15 +45,15 @@ public class DataFeedBackJob implements Job {
 					jo.put("ip", logotype);
 					jo.put("data", datas);
 					jo.put("isAlarm", false);
-					ELog.getInstance().log(
-							String.format("%s周期组包数据====|\r\n %s", logotype, JSONObject.toJSONString(jo)), logotype);
+					ELog.getInstance().log(String.format("%s周期组包数据====|\r\n %s", logotype, JSONObject.toJSONString(jo)),
+							logotype);
 					int _s = logotype / 10000;
 					if (_s == 3 || logotype == 10047 || logotype == 10051 || logotype == 10052) {
 						ELog.getInstance().log(HttpUtils.post(Constants.getEnviroUrl(), jo), logotype);
 					} else {
 						ELog.getInstance().log(HttpUtils.post(Constants.getBathUrl(), jo), logotype);
 					}
-					;
+					 
 				}
 			}, 500, TimeUnit.MILLISECONDS);
 		}

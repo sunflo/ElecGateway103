@@ -62,8 +62,8 @@ public class Constants {
 	/**
 	 * 需求侧后台接口action(批量上报接口)
 	 */
-	
-	//http://dsm.gate.jsclp.cn/dsm/api/front/insertDataBach
+
+	// http://dsm.gate.jsclp.cn/dsm/api/front/insertDataBach
 	private static String BATCH_ACTION = "dsm/api/front/insertDataBach";
 	/**
 	 * 配电，环境监控后台domain
@@ -104,6 +104,14 @@ public class Constants {
 	public static String getEnviroUrl() {
 
 		return ENVIRO_SERVER_PRFIX + ENVIRO_SERVER_ACTION;
+	}
+
+	public static String getEvFullUrl() {
+		return ENVIRO_SERVER_PRFIX;
+	}
+
+	public static String getElecFullUrl() {
+		return ELEC_SERVER_PRFIX;
 	}
 
 }
