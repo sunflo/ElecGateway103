@@ -57,7 +57,7 @@ public class GateWayDecoder extends CumulativeProtocolDecoder {
 			HashMap<Integer, Device> _devices = SessionUtils.getDevices(session);
 			Device currDevice = null;
 			if (null != _devices) {
-				currDevice = _devices.get((int) (cpu & 0xff));
+				currDevice = _devices.get(cpu & 0xff);
 			}
 			unPacker = UnpackerFactory.fetchUnPacker(session, in, currDevice);
 			break;
@@ -70,6 +70,7 @@ public class GateWayDecoder extends CumulativeProtocolDecoder {
 		}
 
 		try {
+			assert unPacker != null;
 			out.write(unPacker.doUnPack());
 			return true;
 		} catch (BufferTransferIncompleteException e) {
