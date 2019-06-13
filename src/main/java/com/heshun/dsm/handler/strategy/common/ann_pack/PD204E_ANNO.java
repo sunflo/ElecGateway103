@@ -58,13 +58,13 @@ public class PD204E_ANNO extends CommonElecPack {
 	@Transform(index = 20, tag = "freq")
 	public float _freq;
 	//
-	@Transform(index = 1, group = DataGroup.YM, tag = "epi")
+	@Transform(index = 1, group = DataGroup.YM, tag = "epi",ratio = 1000)
 	public long epi;// 正向有功电度
-	@Transform(index = -1, group = DataGroup.YM, tag = "epe")
+	@Transform(index = -1, group = DataGroup.YM, tag = "epe",ratio = 1000)
 	public long epe;// 负向有功电度
-	@Transform(index = 2, group = DataGroup.YM, tag = "eql")
+	@Transform(index = 2, group = DataGroup.YM, tag = "eql",ratio = 1000)
 	public long eql;// 正向无功电度
-	@Transform(index = -1, group = DataGroup.YM, tag = "eqc")
+	@Transform(index = -1, group = DataGroup.YM, tag = "eqc",ratio = 1000)
 	public long eqc;// 负向无功电度
 
 	public PD204E_ANNO(int address) {
