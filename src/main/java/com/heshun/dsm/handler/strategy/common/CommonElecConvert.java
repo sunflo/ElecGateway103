@@ -1,12 +1,12 @@
 package com.heshun.dsm.handler.strategy.common;
 
-import java.lang.reflect.Field;
-
 import com.alibaba.fastjson.JSONObject;
 import com.heshun.dsm.entity.convert.AbsJsonConvert;
 import com.heshun.dsm.entity.pack.DefaultDevicePacket;
 import com.heshun.dsm.handler.anno.Transform;
 import com.heshun.dsm.handler.anno.Transform.DataType;
+
+import java.lang.reflect.Field;
 
 public class CommonElecConvert<T extends DefaultDevicePacket> extends AbsJsonConvert<T> {
 
@@ -80,7 +80,6 @@ public class CommonElecConvert<T extends DefaultDevicePacket> extends AbsJsonCon
         else if (o instanceof Double)
             return ratio > 0 ? ((double) o) * ratio : ((double) o / ratio);
         else if (o instanceof Long)
-
             return ratio > 0 ? (long) (Double.valueOf(o.toString()) * ratio) : (long) (Double.valueOf(o.toString()) / ratio);
         return o;
 

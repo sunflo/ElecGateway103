@@ -35,23 +35,27 @@ public class DataFeedBackJob implements Job {
 
 				@Override
 				public void run() {
-					Map<Integer, AbsJsonConvert<?>> _datas = entry.getValue();
-					List<Object> datas = new ArrayList<Object>();
-					for (Entry<Integer, AbsJsonConvert<?>> entry : _datas.entrySet()) {
-						datas.add(entry.getValue().toJsonObj(String.valueOf(logotype)));
-					}
-					ELog.getInstance().log(String.format("%s-周期结束，组包发送，共%s", logotype, datas.size()), logotype);
-					final JSONObject jo = new JSONObject();
-					jo.put("ip", logotype);
-					jo.put("data", datas);
-					jo.put("isAlarm", false);
-					ELog.getInstance().log(String.format("%s周期组包数据====|\r\n %s", logotype, JSONObject.toJSONString(jo)),
-							logotype);
-					int _s = logotype / 10000;
-					if (_s == 3 || logotype == 10047 || logotype == 10051 || logotype == 10052) {
-						ELog.getInstance().log(HttpUtils.post(Constants.getEnviroUrl(), jo), logotype);
-					} else {
-						ELog.getInstance().log(HttpUtils.post(Constants.getBathUrl(), jo), logotype);
+					try {
+						Map<Integer, AbsJsonConvert<?>> _datas = entry.getValue();
+						List<Object> datas = new ArrayList<Object>();
+						for (Entry<Integer, AbsJsonConvert<?>> entry : _datas.entrySet()) {
+							datas.add(entry.getValue().toJsonObj(String.valueOf(logotype)));
+						}
+						ELog.getInstance().log(String.format("%s-周期结束，组包发送，共%s", logotype, datas.size()), logotype);
+						final JSONObject jo = new JSONObject();
+						jo.put("ip", logotype);
+						jo.put("data", datas);
+						jo.put("isAlarm", false);
+						ELog.getInstance().log(String.format("%s周期组包数据====|\r\n %s", logotype, JSONObject.toJSONString(jo)),
+								logotype);
+						int _s = logotype / 10000;
+						if (_s == 3 || logotype == 10047 || logotype == 10051 || logotype == 10052) {
+							ELog.getInstance().log(HttpUtils.post(Constants.getEnviroUrl(), jo), logotype);
+						} else {
+							ELog.getInstance().log(HttpUtils.post(Constants.getBathUrl(), jo), logotype);
+						}
+					}catch (Exception e){
+						e.printStackTrace();
 					}
 					 
 				}
