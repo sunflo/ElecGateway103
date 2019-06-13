@@ -96,8 +96,10 @@ public abstract class CommonUnPackStrategy<K extends CommonElecPack>
 				break;
 			case INT:
 				f.setInt(origin, Utils.byte2Int(wrapper.getOriginData(), true));
+				break;
 			case LNG:
 				f.setLong(origin, (long) (Utils.byte2Int(wrapper.getOriginData(), true)));
+				break;
 			default:
 				f.setFloat(origin, Utils.byte2float(wrapper.getOriginData()));
 				break;
@@ -121,7 +123,7 @@ public abstract class CommonUnPackStrategy<K extends CommonElecPack>
 	@Override
 	public String getDeviceType() {
 		return mDevice.model;
-	};
+	}
 
 	public abstract K getPack(int cpu);
 
