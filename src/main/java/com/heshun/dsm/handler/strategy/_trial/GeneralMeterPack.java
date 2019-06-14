@@ -10,7 +10,7 @@ import java.util.Map;
 public class GeneralMeterPack extends DefaultDevicePacket {
     private Map<String, Object> mDataCache;
 
-    public GeneralMeterPack(int address, DeviceDriver driver) {
+    GeneralMeterPack(int address, DeviceDriver driver) {
         super(address);
         mDataCache = new HashMap<>();
         for (Map.Entry<String, DriverItem> entry : driver.entrySet()) {
@@ -23,7 +23,5 @@ public class GeneralMeterPack extends DefaultDevicePacket {
         return mDataCache;
     }
 
-    public void setmDataCache(Map<String, Object> mDataCache) {
-        this.mDataCache = mDataCache;
-    }
+
 }

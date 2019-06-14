@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GeneralMeterUnpackStrategy extends AbsDeviceUnpackStrategy<GeneralMeterConvert, GeneralMeterPack> {
-    DeviceDriver mDriver;
+    private DeviceDriver mDriver;
 
     public GeneralMeterUnpackStrategy(IoSession session, IoBuffer in, Device d) {
         super(session, in, d);
@@ -69,7 +69,7 @@ public class GeneralMeterUnpackStrategy extends AbsDeviceUnpackStrategy<GeneralM
 
     @Override
     public GeneralMeterConvert getConvert(GeneralMeterPack packet) {
-        return new GeneralMeterConvert(packet,mDriver);
+        return new GeneralMeterConvert(packet, mDriver);
     }
 
     @Override
@@ -80,10 +80,7 @@ public class GeneralMeterUnpackStrategy extends AbsDeviceUnpackStrategy<GeneralM
     private GeneralMeterConvert fetchOrInitDeviceConvert() {
         Map<Integer, Map<Integer, AbsJsonConvert<?>>> buffer = DataBuffer.getInstance().getBuffer();
         int logotype = SessionUtils.getLogoType(session);
-        Map<Integer, AbsJsonConvert<?>> _temp = buffer.get(logotype);
-        if (_temp == null) {
-            buffer.put(logotype, new HashMap<Integer, AbsJsonConvert<?>>());
-        }
+        buffer.computeIfAbsent(logotype, k -> new HashMap<>());
         GeneralMeterConvert result = (GeneralMeterConvert) buffer.get(logotype).get(mDevice.vCpu);
 
         if (result == null) {

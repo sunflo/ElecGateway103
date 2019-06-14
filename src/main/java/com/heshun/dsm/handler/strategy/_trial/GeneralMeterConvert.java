@@ -8,9 +8,9 @@ import com.heshun.dsm.entity.driver.DriverItem;
 import java.util.Map;
 
 public class GeneralMeterConvert extends AbsJsonConvert<GeneralMeterPack> {
-    DeviceDriver mDriver;
+    private DeviceDriver mDriver;
 
-    public GeneralMeterConvert(GeneralMeterPack packet, DeviceDriver d) {
+    GeneralMeterConvert(GeneralMeterPack packet, DeviceDriver d) {
         super(packet);
         this.mDriver = d;
     }
