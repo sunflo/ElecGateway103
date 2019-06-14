@@ -60,10 +60,8 @@ public class CommonElecConvert<T extends DefaultDevicePacket> extends AbsJsonCon
 
             return withRatio(origin, ratio);
         } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
