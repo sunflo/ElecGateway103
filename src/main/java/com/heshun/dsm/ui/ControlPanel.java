@@ -18,6 +18,8 @@ import javax.swing.JTextArea;
 import com.heshun.dsm.common.Constants;
 import com.heshun.dsm.util.ELog;
 
+import static java.awt.TextArea.SCROLLBARS_VERTICAL_ONLY;
+
 public class ControlPanel {
 	// static ControlPanel window = null;
 	private JFrame mFrame;
@@ -28,7 +30,7 @@ public class ControlPanel {
 	private Button mBtnClear = new Button();
 	private Button mBtnLock = new Button();
 	private Button mBtnFlush = new Button();
-	private TextArea mTvLogs = new TextArea();
+	private TextArea mTvLogs = new TextArea("",0,0,SCROLLBARS_VERTICAL_ONLY);
 	// private TextArea mTvDevices = new TextArea();
 	private TextArea mTvDatas = new TextArea();
 	//
