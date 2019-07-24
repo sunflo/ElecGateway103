@@ -3,7 +3,6 @@ package com.heshun.dsm.entity.driver;
 import com.heshun.dsm.common.Config;
 import com.heshun.dsm.util.ELog;
 import com.heshun.dsm.util.Utils;
-import com.sun.istack.internal.NotNull;
 import org.apache.http.util.TextUtils;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -81,7 +80,16 @@ public class DriverLoader {
 
     }
 
-    public static DeviceDriver load(@NotNull String _temp) {
+    public static boolean unload(String name) {
+        if (mDriverContainer.containsKey(name)) {
+            mDriverContainer.remove(name);
+            return true;
+        }
+        return false;
+    }
+
+
+    public static DeviceDriver load(String _temp) {
         String fileName = _temp.toLowerCase();
         if (mDriverContainer.containsKey(fileName))
             return mDriverContainer.get(fileName);
@@ -92,7 +100,7 @@ public class DriverLoader {
         File configFile = null;
         try {
             decrypt(fileName);
-            configFile = Utils.getConfigFile(String.format("/dri/%s.tmp", fileName));
+            configFile = Utils.getConfigFile("dri", String.format("%s.tmp", fileName));
             fr = new FileReader(configFile);
             br = new BufferedReader(fr);
             DeviceDriver driver = new DeviceDriver();
@@ -101,6 +109,8 @@ public class DriverLoader {
                 String line = br.readLine();
                 if (line == null)
                     break;
+                else
+                    line = line.trim();
                 if (line.startsWith("#") || line.startsWith("//") || TextUtils.isEmpty(line)) {
                     continue;
                     //注释，do nothing
@@ -115,7 +125,7 @@ public class DriverLoader {
                     driver.register(item);
                 }
             }
-            if (driver.size() >= 0) {
+            if (driver.size() > 0) {
                 mDriverContainer.put(fileName, driver);
                 return driver;
             }
@@ -156,7 +166,9 @@ public class DriverLoader {
         OutputStreamWriter fileWriter = null;
 
         try {
-            fis = new FileInputStream(Utils.getConfigFile(String.format("/dri/%s.dr", oFileName)));
+            File configFile = Utils.getConfigFile("dri", String.format("%s.dr", oFileName));
+
+            fis = new FileInputStream(configFile);
             byte[] buffer = new byte[fis.available()];
             fis.read(buffer);
             String origin = new String(buffer);
@@ -165,7 +177,7 @@ public class DriverLoader {
             if (code.length() <= 8)
                 throw new IllegalStateException();
             String result = decoder(code.substring(decodeKey[0], code.length() - decodeKey[1] - decodeKey[3]).concat(code.substring(code.length() - decodeKey[3])));
-            File target = Utils.getConfigFile(String.format("/dri/%s.tmp", oFileName));
+            File target = Utils.getConfigFile("dri", String.format("%s.tmp", oFileName));
 
             fos = new FileOutputStream(target);
 
@@ -195,7 +207,7 @@ public class DriverLoader {
         return encoder.encode(origin.getBytes()).replaceAll("\r|\n", "");
     }
 
-    public static String randomString(int length) {
+    private static String randomString(int length) {
         String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         Random random = new Random();
         StringBuffer sb = new StringBuffer();
