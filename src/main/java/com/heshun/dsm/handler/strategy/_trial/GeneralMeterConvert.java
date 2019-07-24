@@ -23,8 +23,8 @@ public class GeneralMeterConvert extends AbsJsonConvert<GeneralMeterPack> {
     @Override
     public JSONObject toJsonObj(String ip) {
         JSONObject jsonObject = super.toJsonObj(ip);
-        Map<String, Object> quotas = mPacket.getmDataCache();
-        for (Map.Entry<String, Object> entry : quotas.entrySet()) {
+
+        for (Map.Entry<String, Object> entry : mPacket.entrySet()) {
             String key = entry.getKey();
             DriverItem policy = mDriver.get(key);
             jsonObject.put(policy.getmTag(), withRatio(entry.getValue(), policy.getmRatio()));

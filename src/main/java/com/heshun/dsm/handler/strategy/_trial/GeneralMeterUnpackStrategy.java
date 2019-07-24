@@ -31,7 +31,7 @@ public class GeneralMeterUnpackStrategy extends AbsDeviceUnpackStrategy<GeneralM
         GeneralMeterConvert cvt = fetchOrInitDeviceConvert();
         GeneralMeterPack p = cvt.getOriginal();
 
-        for (Map.Entry<String, Object> entry : p.getmDataCache().entrySet()) {
+        for (Map.Entry<String, Object> entry : p.entrySet()) {
             String key = entry.getKey();
             String[] s = key.split("-");
             String group = s[0];
@@ -56,9 +56,9 @@ public class GeneralMeterUnpackStrategy extends AbsDeviceUnpackStrategy<GeneralM
                 if (rw == null)
                     continue;
                 if (rw.getDataTyp() == 0x07) {
-                    p.getmDataCache().put(key, Utils.byte2float(rw.getOriginData(), policy.isReverse()));
+                    p.put(key, Utils.byte2float(rw.getOriginData(), policy.isReverse()));
                 } else {
-                    p.getmDataCache().put(key, (long) (Utils.byte2Int(rw.getOriginData(), !policy.isReverse())));
+                    p.put(key, (long) (Utils.byte2Int(rw.getOriginData(), !policy.isReverse())));
                 }
             }
 
