@@ -1,18 +1,9 @@
 package com.heshun.dsm;
 
-import java.awt.Label;
-import java.awt.TextArea;
-import java.awt.TextField;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.swing.JList;
-import javax.swing.SwingUtilities;
-
 import com.alibaba.fastjson.JSONException;
 import com.heshun.dsm.common.Constants;
 import com.heshun.dsm.entity.convert.AbsJsonConvert;
+import com.heshun.dsm.entity.driver.DriverLoader;
 import com.heshun.dsm.entity.global.DataBuffer;
 import com.heshun.dsm.service.SystemHelper;
 import com.heshun.dsm.ui.ControlPanel;
@@ -21,10 +12,16 @@ import com.heshun.dsm.ui.ControlPanel.OnStatusChangeListener;
 import com.heshun.dsm.ui.ListPanel;
 import com.heshun.dsm.util.ELog;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Map;
+import java.util.Map.Entry;
+
 public class GateWayServerMain {
 
     public static void main(String[] args) {
-
         ControlPanel panel = new ControlPanel(new OnClickListener() {
 
             @Override
@@ -101,7 +98,12 @@ public class GateWayServerMain {
              */
             @Override
             public void onFlush() {
-                SystemHelper.mQueryTask.flush();
+//                SystemHelper.mQueryTask.flush();
+                String devName = JOptionPane.showInputDialog(null, "型号", "清除设备驱动缓存", 1);
+                if (!devName.isEmpty()) {
+                    boolean unload = DriverLoader.unload(devName);
+                    ELog.getInstance().log(String.format("清除设备驱动 [%s] 缓存-->>  %s ", devName, unload));
+                }
             }
 
             @Override
