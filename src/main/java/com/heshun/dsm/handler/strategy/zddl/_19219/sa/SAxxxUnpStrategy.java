@@ -1,24 +1,22 @@
 package com.heshun.dsm.handler.strategy.zddl._19219.sa;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.apache.mina.core.buffer.IoBuffer;
-import org.apache.mina.core.session.IoSession;
-
 import com.heshun.dsm.entity.Device;
 import com.heshun.dsm.entity.ResultWrapper;
 import com.heshun.dsm.entity.convert.AbsJsonConvert;
 import com.heshun.dsm.entity.global.DataBuffer;
-import com.heshun.dsm.handler.helper.IgnorePackageException;
 import com.heshun.dsm.handler.helper.PacketInCorrectException;
 import com.heshun.dsm.handler.helper.UnRegistSupervisorException;
 import com.heshun.dsm.handler.strategy.AbsDeviceUnpackStrategy;
 import com.heshun.dsm.util.SessionUtils;
 import com.heshun.dsm.util.Utils;
+import org.apache.mina.core.buffer.IoBuffer;
+import org.apache.mina.core.session.IoSession;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * 智瀚EQA300带无功，视在功率的解包策略
@@ -155,8 +153,7 @@ public class SAxxxUnpStrategy extends AbsDeviceUnpackStrategy<SAxxxConvert, SAxx
 
 	@Override
 	protected SAxxxPacket handleActive(int size, Map<Integer, ResultWrapper> ycData,
-			Map<Integer, ResultWrapper> yxData, Map<Integer, ResultWrapper> ymData) throws IgnorePackageException,
-			PacketInCorrectException {
+			Map<Integer, ResultWrapper> yxData, Map<Integer, ResultWrapper> ymData)  {
 		SAxxxPacket packet = fetchOrInitDeviceConvert().getOriginal();
 		
 

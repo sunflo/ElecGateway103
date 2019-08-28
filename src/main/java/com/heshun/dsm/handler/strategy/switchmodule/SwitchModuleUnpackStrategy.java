@@ -4,8 +4,6 @@ import com.heshun.dsm.entity.Device;
 import com.heshun.dsm.entity.ResultWrapper;
 import com.heshun.dsm.entity.convert.AbsJsonConvert;
 import com.heshun.dsm.entity.global.DataBuffer;
-import com.heshun.dsm.handler.helper.IgnorePackageException;
-import com.heshun.dsm.handler.helper.PacketInCorrectException;
 import com.heshun.dsm.handler.helper.UnRegistSupervisorException;
 import com.heshun.dsm.handler.strategy.AbsDeviceUnpackStrategy;
 import com.heshun.dsm.service.SystemHelper;
@@ -32,8 +30,7 @@ public class SwitchModuleUnpackStrategy extends AbsDeviceUnpackStrategy<SwitchMo
 
     @Override
     protected SwitchModulePacket handleChange(int size, Map<Integer, ResultWrapper> ycData,
-                                              Map<Integer, ResultWrapper> yxData, Map<Integer, ResultWrapper> ymData) throws IgnorePackageException,
-            PacketInCorrectException {
+                                              Map<Integer, ResultWrapper> yxData, Map<Integer, ResultWrapper> ymData) {
         AbsJsonConvert<?> c;
 
         if (DataBuffer.getInstance().getBuffer() == null
@@ -46,7 +43,7 @@ public class SwitchModuleUnpackStrategy extends AbsDeviceUnpackStrategy<SwitchMo
 
         SwitchModuleConvert original = (SwitchModuleConvert) c;
         SwitchModulePacket packet = original.getOriginal();
-        packet.notify = true;
+        packet.notify = 1;
         for (Entry<Integer, ResultWrapper> entry : yxData.entrySet()) {
             packet.mFlags.put(String.valueOf(entry.getKey()), entry.getValue().getOriginData()[0] != 1);
         }
@@ -62,8 +59,7 @@ public class SwitchModuleUnpackStrategy extends AbsDeviceUnpackStrategy<SwitchMo
 
     @Override
     protected SwitchModulePacket handleTotalQuery(int size, Map<Integer, ResultWrapper> ycData,
-                                                  Map<Integer, ResultWrapper> yxData, Map<Integer, ResultWrapper> ymData) throws PacketInCorrectException,
-            UnRegistSupervisorException {
+                                                  Map<Integer, ResultWrapper> yxData, Map<Integer, ResultWrapper> ymData) {
         SwitchModulePacket packet = new SwitchModulePacket(mDevice.vCpu);
         for (Entry<Integer, ResultWrapper> entry : yxData.entrySet()) {
             packet.mFlags.put(String.valueOf(entry.getKey()), entry.getValue().getOriginData()[0] != 1);

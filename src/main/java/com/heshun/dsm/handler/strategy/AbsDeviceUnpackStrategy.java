@@ -62,7 +62,8 @@ public abstract class AbsDeviceUnpackStrategy<T extends AbsJsonConvert<V>, V ext
                 byte index = in.get();
                 // 偏移无用数据
                 in.get();
-                // 数据类型,已知0x07 float ;0x0c unsigned short
+                // 数据类型,已知0x07 float ;0x0c unsigned short;09 byte
+                //08 0D 01 09 01 01 02
                 byte dataType = in.get();
                 byte dataLength = in.get();
                 byte[] data = new byte[dataLength];

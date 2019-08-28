@@ -1,24 +1,22 @@
 package com.heshun.dsm.handler.strategy.acrel;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.apache.mina.core.buffer.IoBuffer;
-import org.apache.mina.core.session.IoSession;
-
 import com.heshun.dsm.entity.Device;
 import com.heshun.dsm.entity.ResultWrapper;
 import com.heshun.dsm.entity.convert.AbsJsonConvert;
 import com.heshun.dsm.entity.global.DataBuffer;
-import com.heshun.dsm.handler.helper.IgnorePackageException;
 import com.heshun.dsm.handler.helper.PacketInCorrectException;
 import com.heshun.dsm.handler.helper.UnRegistSupervisorException;
 import com.heshun.dsm.handler.strategy.AbsDeviceUnpackStrategy;
 import com.heshun.dsm.util.SessionUtils;
 import com.heshun.dsm.util.Utils;
+import org.apache.mina.core.buffer.IoBuffer;
+import org.apache.mina.core.session.IoSession;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * 
@@ -74,9 +72,7 @@ public class PZ7280EUnpStrategy extends AbsDeviceUnpackStrategy<PZ7280EConvert, 
 			methods_0A.put(1, PZ7280EPacket.class.getMethod("setEpi", long.class));
 			methods_0A.put(3, PZ7280EPacket.class.getMethod("setEql", long.class));
 
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
+		} catch (NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 		}
 	}
@@ -131,7 +127,7 @@ public class PZ7280EUnpStrategy extends AbsDeviceUnpackStrategy<PZ7280EConvert, 
 		return packet;
 	}
 
-	protected PZ7280EConvert fetchOrInitDeviceConvert() {
+	private PZ7280EConvert fetchOrInitDeviceConvert() {
 		Map<Integer, Map<Integer, AbsJsonConvert<?>>> buffer = DataBuffer.getInstance().getBuffer();
 		int logotype = SessionUtils.getLogoType(session);
 		Map<Integer, AbsJsonConvert<?>> _temp = buffer.get(logotype);
@@ -151,7 +147,7 @@ public class PZ7280EUnpStrategy extends AbsDeviceUnpackStrategy<PZ7280EConvert, 
 
 	@Override
 	protected PZ7280EPacket handleActive(int size, Map<Integer, ResultWrapper> ycData, Map<Integer, ResultWrapper> yxData,
-			Map<Integer, ResultWrapper> ymData) throws IgnorePackageException, PacketInCorrectException {
+			Map<Integer, ResultWrapper> ymData) {
 		PZ7280EPacket packet = fetchOrInitDeviceConvert().getOriginal();
 
 		for (Entry<Integer, ResultWrapper> entry : ycData.entrySet()) {

@@ -1,6 +1,7 @@
 package com.heshun.dsm.handler.strategy;
 
-import com.heshun.dsm.entity.driver.DriverLoader;
+import com.heshun.dsm.entity.driver.DeviceDriverLoader;
+import com.heshun.dsm.handler.strategy._trial.FujiGeneralMeterUnpackStrategy;
 import com.heshun.dsm.handler.strategy._trial.GeneralMeterUnpackStrategy;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
@@ -49,7 +50,10 @@ public class UnpackerFactory {
         if (model.equalsIgnoreCase("logotype"))
             return new LogoTypeUnpStrategy(session, in, device);
         //统一解包策略
-        if (DriverLoader.load(model) != null)
+        if (model.equalsIgnoreCase("fujiswitch")) {
+            return new FujiGeneralMeterUnpackStrategy(session, in, device);
+        }
+        if (DeviceDriverLoader.load(model) != null)
             return new GeneralMeterUnpackStrategy(session, in, device);
         //兼容老版本独立unpacker的方案，逐步过渡废弃
         switch (model) {
