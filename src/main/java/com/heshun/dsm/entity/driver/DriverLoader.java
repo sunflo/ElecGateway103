@@ -5,81 +5,18 @@ import com.heshun.dsm.util.ELog;
 import com.heshun.dsm.util.Utils;
 import org.apache.http.util.TextUtils;
 import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 import java.io.*;
 import java.net.URLDecoder;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.heshun.dsm.common.Config.DK;
 
 public class DriverLoader {
 
     private static ConcurrentHashMap<String, DeviceDriver> mDriverContainer = new ConcurrentHashMap<>();
 
-    private static int[] decodeKey = new int[]{5, 8, 7, 2};
-
-    public static void main(String[] a) {
-        FileInputStream fis = null;
-        FileOutputStream fos = null;
-        OutputStreamWriter fileWriter = null;
-        try {
-            File hiddenDir = new File("src/main/resource/dri/bk");
-            if (!hiddenDir.exists())
-                return;
-            String[] cfgs = hiddenDir.list((dir, name) -> name.endsWith(".cfg"));
-            for (String c : cfgs) {
-                File f = new File(hiddenDir, c);
-                fis = new FileInputStream(f);
-                byte[] buffer = new byte[fis.available()];
-                fis.read(buffer);
-                String text = new String(buffer);
-                String _1 = encoder(text);
-                StringBuffer sb = new StringBuffer(_1);
-                sb.insert(0, randomString(decodeKey[0]));
-                sb.insert(sb.length() - decodeKey[3], randomString(decodeKey[1]));
-//
-                String _2 = encoder(sb.toString());
-                StringBuffer result = new StringBuffer(_2);
-
-                result.insert(0, randomString(decodeKey[2]));
-                fos = new FileOutputStream(new File("src/main/resource/dri", c.replace(".cfg", ".dr")));
-                fileWriter = new OutputStreamWriter(fos);
-                fileWriter.write(result.toString());
-                fileWriter.flush();
-
-            }
-        } catch (FileNotFoundException e) {
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fileWriter != null) {
-                try {
-                    fileWriter.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-        }
-
-    }
-
+    //卸载驱动
     public static boolean unload(String name) {
         if (mDriverContainer.containsKey(name)) {
             mDriverContainer.remove(name);
@@ -173,10 +110,10 @@ public class DriverLoader {
             fis.read(buffer);
             String origin = new String(buffer);
 
-            String code = URLDecoder.decode(decoder(origin.substring(decodeKey[2])), "UTF-8");
+            String code = URLDecoder.decode(decoder(origin.substring(DK[2])), "UTF-8");
             if (code.length() <= 8)
                 throw new IllegalStateException();
-            String result = decoder(code.substring(decodeKey[0], code.length() - decodeKey[1] - decodeKey[3]).concat(code.substring(code.length() - decodeKey[3])));
+            String result = decoder(code.substring(DK[0], code.length() - DK[1] - DK[3]).concat(code.substring(code.length() - DK[3])));
             File target = Utils.getConfigFile("dri", String.format("%s.tmp", oFileName));
 
             fos = new FileOutputStream(target);
@@ -202,23 +139,5 @@ public class DriverLoader {
         return new String(decoder.decodeBuffer(origin));
     }
 
-    private static String encoder(String origin) {
-        BASE64Encoder encoder = new BASE64Encoder();
-        return encoder.encode(origin.getBytes()).replaceAll("\r|\n", "");
-    }
 
-    private static String randomString(int length) {
-        String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        Random random = new Random();
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < length; i++) {
-            int number;
-            if (i == 0)
-                number = random.nextInt(26) + 26;
-            else
-                number = random.nextInt(62);
-            sb.append(str.charAt(number));
-        }
-        return sb.toString();
-    }
 }

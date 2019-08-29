@@ -101,7 +101,7 @@ public class DriverItem {
     }
 
     public enum DataType {
-        SHT(1), INT(2), SHT_UNS(3), INT_UNS(4), LNG(5), FLT(6), DBLE(7), STR(8);
+        BYT(0), SHT(1), INT(2), SHT_UNS(3), INT_UNS(4), LNG(5), FLT(6), DBLE(7), STR(8);
 
         private int code;
 
