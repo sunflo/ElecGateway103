@@ -37,7 +37,8 @@ public class SystemHelper {
     // 网关的Tcp接收器，所有TCP报文，通过他来接收
     public static NioSocketAcceptor minaAcceptor = new NioSocketAcceptor();
 
-    public static TotalQueryTask mQueryTask;
+    //    public static TotalQueryTask mQueryTask;
+    public static TotalQueryEmitter mQueryTask;
 
     public static ScheduledExecutorService mHttpRequestThreadPool = Executors.newScheduledThreadPool(12);
 
@@ -176,7 +177,7 @@ public class SystemHelper {
         return true;
     }
 
-    public static HashMap<Integer, Device> loadDevicesByLogoType(int logotype) throws Exception {
+    public static HashMap<Integer, Device> loadDevicesByLogoType(int logotype) {
         FileInputStream fis = null;
         try {
 
@@ -208,9 +209,20 @@ public class SystemHelper {
         } catch (NullPointerException e) {
             ELog.getInstance().err(Arrays.toString(e.getStackTrace()));
             return null;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         } finally {
-            if (null != fis)
-                fis.close();
+            if (null != fis) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -311,10 +323,13 @@ public class SystemHelper {
 
     /**
      * 开启遍历总查询
+     *
+     * @return
      */
-    public static TotalQueryTask initTotalQuery() {
+    public static TotalQueryEmitter initTotalQuery(OnStatusChangeListener listener) {
 
-        mQueryTask = new TotalQueryTask();
+//        mQueryTask = new TotalQueryTask();
+        mQueryTask = new TotalQueryEmitter(listener);
         mQueryTask.start();
         // mQueryTask.start();
         return mQueryTask;
