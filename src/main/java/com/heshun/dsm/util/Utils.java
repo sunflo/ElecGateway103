@@ -133,7 +133,7 @@ public class Utils {
         bytes[6] = low[1];
         bytes[7] = low[0];
 
-        return ByteUtils.byte8ToLong(bytes) & 0xFFFFFFFFl;
+        return ByteUtils.byte8ToLong(bytes) & 0xFFFFFFFFL;
     }
 
     public static String getCurrentTime() {
@@ -151,11 +151,20 @@ public class Utils {
                 File dir = new File(SystemHelper.class.getResource("/").getPath());
                 File dri = new File(dir, path);
                 File file = new File(dri, fileName);
-                ELog.getInstance().log("\n\n\n\n\n\n" + file.getAbsolutePath() + "\n\n\n\n\n\n");
+//                ELog.getInstance().log("\n\n\n\n\n\n" + file.getAbsolutePath() + "\n\n\n\n\n\n");
                 return file;
             }
         } catch (NullPointerException e) {
             throw new FileNotFoundException(path);
+        }
+    }
+
+    public static File getConfigDir() {
+        if (Config.isDebug) {
+            return new File("src/main/resource/dri");
+        } else {
+            File dir = new File(SystemHelper.class.getResource("/").getPath());
+            return new File(dir, "dri");
         }
     }
 

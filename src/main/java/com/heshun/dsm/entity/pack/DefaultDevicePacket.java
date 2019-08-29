@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class DefaultDevicePacket extends HashMap<String, Object> {
     public int address = 0;
 
-    public boolean notify = false;
+    public int notify = 0;
 
     public DefaultDevicePacket(int address) {
         this.address = address;
