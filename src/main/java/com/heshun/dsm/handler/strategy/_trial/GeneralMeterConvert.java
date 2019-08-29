@@ -38,7 +38,8 @@ public class GeneralMeterConvert extends AbsJsonConvert<GeneralMeterPack> {
         if (ratio == 0 || ratio == 1)
             return o;
         if (o instanceof Short || o instanceof Integer)
-            return ratio > 0 ? (int) (((float) o) * ratio) : (int) (((float) o) / ratio);
+
+            return ratio > 0 ? (int) (( ((Number) o).floatValue()) * ratio) : (int) ((((Number) o).floatValue()) / ratio);
         else if (o instanceof Float)
             return ratio > 0 ? ((float) o) * ratio : ((float) o) / ratio;
         else if (o instanceof Double)

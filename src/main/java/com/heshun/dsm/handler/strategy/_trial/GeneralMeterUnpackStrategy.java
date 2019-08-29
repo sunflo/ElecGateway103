@@ -4,8 +4,8 @@ import com.heshun.dsm.entity.Device;
 import com.heshun.dsm.entity.ResultWrapper;
 import com.heshun.dsm.entity.convert.AbsJsonConvert;
 import com.heshun.dsm.entity.driver.DeviceDriver;
+import com.heshun.dsm.entity.driver.DeviceDriverLoader;
 import com.heshun.dsm.entity.driver.DriverItem;
-import com.heshun.dsm.entity.driver.DriverLoader;
 import com.heshun.dsm.entity.global.DataBuffer;
 import com.heshun.dsm.handler.helper.PacketInCorrectException;
 import com.heshun.dsm.handler.helper.UnRegistSupervisorException;
@@ -19,15 +19,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GeneralMeterUnpackStrategy extends AbsDeviceUnpackStrategy<GeneralMeterConvert, GeneralMeterPack> {
-    private DeviceDriver mDriver;
+    protected DeviceDriver mDriver;
 
     public GeneralMeterUnpackStrategy(IoSession session, IoBuffer in, Device d) {
         super(session, in, d);
-        mDriver = DriverLoader.load(d.model);
+        mDriver = DeviceDriverLoader.load(d.model);
+        dealActive = true;
     }
 
     @Override
     protected GeneralMeterPack handleTotalQuery(int size, Map<Integer, ResultWrapper> ycData, Map<Integer, ResultWrapper> yxData, Map<Integer, ResultWrapper> ymData) throws PacketInCorrectException, UnRegistSupervisorException {
+        return actionHandle(size, ycData, yxData, ymData);
+
+    }
+
+    private GeneralMeterPack actionHandle(int size, Map<Integer, ResultWrapper> ycData, Map<Integer, ResultWrapper> yxData, Map<Integer, ResultWrapper> ymData) {
         GeneralMeterConvert cvt = fetchOrInitDeviceConvert();
         GeneralMeterPack p = cvt.getOriginal();
 
@@ -57,6 +63,8 @@ public class GeneralMeterUnpackStrategy extends AbsDeviceUnpackStrategy<GeneralM
                     continue;
                 if (rw.getDataTyp() == 0x07) {
                     p.put(key, Utils.byte2float(rw.getOriginData(), policy.isReverse()));
+                } else if (rw.getDataTyp() == 0x09) {
+                    p.put(key, (int) rw.getOriginData()[0]);
                 } else {
                     p.put(key, (long) (Utils.byte2Int(rw.getOriginData(), !policy.isReverse())));
                 }
@@ -64,8 +72,13 @@ public class GeneralMeterUnpackStrategy extends AbsDeviceUnpackStrategy<GeneralM
 
         }
         return p;
-
     }
+
+    @Override
+    protected GeneralMeterPack handleActive(int size, Map<Integer, ResultWrapper> ycData, Map<Integer, ResultWrapper> yxData, Map<Integer, ResultWrapper> ymData) {
+        return actionHandle(size, ycData, yxData, ymData);
+    }
+
 
     @Override
     public GeneralMeterConvert getConvert(GeneralMeterPack packet) {
@@ -77,7 +90,7 @@ public class GeneralMeterUnpackStrategy extends AbsDeviceUnpackStrategy<GeneralM
         return mDriver.getName();
     }
 
-    private GeneralMeterConvert fetchOrInitDeviceConvert() {
+    protected GeneralMeterConvert fetchOrInitDeviceConvert() {
         Map<Integer, Map<Integer, AbsJsonConvert<?>>> buffer = DataBuffer.getInstance().getBuffer();
         int logotype = SessionUtils.getLogoType(session);
         buffer.computeIfAbsent(logotype, k -> new HashMap<>());

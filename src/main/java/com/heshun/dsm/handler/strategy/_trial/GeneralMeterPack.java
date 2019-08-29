@@ -1,5 +1,6 @@
 package com.heshun.dsm.handler.strategy._trial;
 
+import com.alibaba.fastjson.JSONObject;
 import com.heshun.dsm.entity.driver.DeviceDriver;
 import com.heshun.dsm.entity.driver.DriverItem;
 import com.heshun.dsm.entity.pack.DefaultDevicePacket;
@@ -7,7 +8,7 @@ import com.heshun.dsm.entity.pack.DefaultDevicePacket;
 import java.util.Map;
 
 public class GeneralMeterPack extends DefaultDevicePacket {
-//    private Map<String, Object> mDataCache;
+
 
     GeneralMeterPack(int address, DeviceDriver driver) {
         super(address);
@@ -18,9 +19,13 @@ public class GeneralMeterPack extends DefaultDevicePacket {
         }
     }
 
-//    public Map<String, Object> getmDataCache() {
-//        return mDataCache;
-//    }
+    GeneralMeterPack(int address) {
+        super(address);
+    }
+
+    public JSONObject parseJson() {
+        return new JSONObject(this);
+    }
 
 
 }
