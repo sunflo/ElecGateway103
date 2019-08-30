@@ -1,3 +1,5 @@
 /target/
 /.idea
 /.settings
+*.tmp
+/src/main/resource/dri/bk
