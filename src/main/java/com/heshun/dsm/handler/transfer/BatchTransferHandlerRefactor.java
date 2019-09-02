@@ -68,7 +68,7 @@ public class BatchTransferHandlerRefactor implements ItfTransferHandler {
             jo.put("type", "switch");
             jo.put("gatherTime", message.gatherTime);
             JSONObject jsonObject = original.parseJson();
-            jsonObject.remove("address");
+//            jsonObject.remove("address");
             jsonObject.remove("notify");
             jo.put("data", jsonObject);
             ELog.getInstance().log(String.format("Fuji Fuji Pala Pala 突变上送|\r\n %s \r\n %s", logotype, JSONObject.toJSONString(jo)),

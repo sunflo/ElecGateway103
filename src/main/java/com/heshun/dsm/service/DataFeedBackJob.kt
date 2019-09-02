@@ -12,16 +12,15 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import com.heshun.dsm.util.ELog.getInstance as g
 
-
 class DataFeedBackJob : Job {
+    //特殊的几个场站id
     private val mHeterogeneous = arrayOf(10047, 10051, 10052)
+
     override fun execute(context: JobExecutionContext) {
         try {
             g().log("[开始发送本周期数据${Utils.getCurrentTime()}]")
             HashMap<Int, Map<Int, AbsJsonConvert<*>>>()
-                    .apply {
-                        putAll(DataBuffer.getInstance().buffer)
-                    }
+                    .apply { putAll(DataBuffer.getInstance().buffer) }
                     .forEach { logotype, convert ->
                         SystemHelper.mHttpRequestThreadPool.schedule({
                             JSONObject().let {
@@ -38,16 +37,12 @@ class DataFeedBackJob : Job {
                             }
 
                         }, 500, TimeUnit.MILLISECONDS)
-
                     }
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
     }
 
-    private fun url(logotype: Int) = if (logotype / 10000 == 3 || mHeterogeneous.contains(logotype)) Constants.getEnviroUrl() else Constants.getBathUrl()
-
-
+    private fun url(logotype: Int) =
+            if (logotype / 10000 == 3 || mHeterogeneous.contains(logotype)) Constants.getEnviroUrl() else Constants.getBathUrl()
 }

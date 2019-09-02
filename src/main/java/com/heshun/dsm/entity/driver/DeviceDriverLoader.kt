@@ -68,12 +68,11 @@ class DeviceDriverLoader {
         internal fun decrypt(oFileName: String): File {
             try {
                 return Utils.getConfigFile("dri", String.format("%s.tmp", oFileName)).apply {
-                    writeText(
-                            Utils.getConfigFile("dri", String.format("%s.dr", oFileName)).readText().let {
-                                URLDecoder.decode(decoder(it.substring(DK[2])), "UTF-8").run {
-                                    URLDecoder.decode(decoder(this.substring(DK[0], this.length - DK[1] - DK[3]) + this.substring(this.length - DK[3])), "UTF-8")
-                                }
-                            })
+                    writeText(Utils.getConfigFile("dri", String.format("%s.dr", oFileName)).readText().let {
+                        URLDecoder.decode(decoder(it.substring(DK[2])), "UTF-8").run {
+                            URLDecoder.decode(decoder(this.substring(DK[0], this.length - DK[1] - DK[3]) + this.substring(this.length - DK[3])), "UTF-8")
+                        }
+                    })
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -94,10 +93,9 @@ class DeviceDriverLoader {
 
 
         @Throws(IOException::class)
-        private fun decoder(origin: String): String {
-            val decoder = BASE64Decoder()
-            return String(decoder.decodeBuffer(origin))
-        }
+        private fun decoder(origin: String): String =
+                String(BASE64Decoder().decodeBuffer(origin))
+
     }
 
 }
