@@ -66,6 +66,7 @@ public class BatchTransferHandlerRefactor implements ItfTransferHandler {
             final JSONObject jo = new JSONObject();
             jo.put("orgId", 639);
             jo.put("type", "switch");
+            jo.put("address", original.address);
             jo.put("gatherTime", message.gatherTime);
             JSONObject jsonObject = original.parseJson();
 //            jsonObject.remove("address");
