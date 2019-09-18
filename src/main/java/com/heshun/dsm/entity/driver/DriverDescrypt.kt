@@ -6,11 +6,11 @@ import java.io.File
 
 fun main() {
     Config.isDebug = true
-    val cfgDir = File("src/main/resource/dri")
-
-    cfgDir.list { _, name ->
-        name.endsWith(".dr")
-    }.forEach {
-        DeviceDriverLoader.decrypt(it.subSequence(0, it.lastIndexOf(".")).toString())
+    File("src/main/resource/dri").run {
+        list { _, name ->
+            name.endsWith(".dr")
+        }.forEach {
+            DeviceDriverLoader.decrypt(it.subSequence(0, it.lastIndexOf(".")).toString())
+        }
     }
 }

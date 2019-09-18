@@ -5,12 +5,10 @@ import sun.misc.BASE64Encoder
 import java.io.File
 import java.util.Random
 
-
 fun main() {
-
     val cfgDir = File("src/main/resource/dri/bk")
 
-    cfgDir.list { dir, name ->
+    cfgDir.list { _, name ->
         name.endsWith(".cfg")
     }.forEach {
         File("src/main/resource/dri", it.replace(".cfg", ".dr"))
@@ -27,11 +25,9 @@ fun main() {
                         }
                 )
     }
-
-
 }
 
-private fun encoder(origin: String): String = BASE64Encoder().encode(origin.toByteArray()).replace("\r|\n".toRegex(), "")
+private fun encoder(origin: String): String = BASE64Encoder().encode(origin.toByteArray()).replace("[\r\n]".toRegex(), "")
 
 fun Random.nextString(length: Int): String {
     return with(StringBuilder()) {
@@ -45,8 +41,6 @@ fun Random.nextString(length: Int): String {
         }
         this.toString()
     }
-
-
 }
 
 
